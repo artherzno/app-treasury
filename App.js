@@ -16,7 +16,7 @@ export default class App extends React.Component {
             <Stack.Screen
               name="LoginPage"
               component={LoginPage}
-              options={{ title: 'Login Page' }}
+              options={{ title: 'Welcome' }}
             />
             <Stack.Screen name="MapPage" component={MapPage} />
           </Stack.Navigator>
