@@ -1,9 +1,11 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+import logoLogin from './assets/tnl-login-logo3x.png'
 
 const Stack = createStackNavigator();
 
@@ -16,7 +18,6 @@ export default class App extends React.Component {
             <Stack.Screen
               name="LoginPage"
               component={LoginPage}
-              options={{ title: 'Welcome' }}
             />
             <Stack.Screen name="MapPage" component={MapPage} />
           </Stack.Navigator>
@@ -29,9 +30,13 @@ export default class App extends React.Component {
 // Login Page ------------------------------------------------------//
 class LoginPage extends React.Component {
   render() {
+
     return (
-      <View> 
-        <Text>Login Page</Text>
+      <View style={styles.container}> 
+         <Image
+          style={styles.tinyLogo}
+          source={logoLogin}
+        />
         <TouchableOpacity 
           style={styles.buttonStyle}
           onPress={() =>
@@ -84,7 +89,7 @@ class MapPage extends React.Component {
 }
 
 
-
+// StyelSheet (CSS) ------------------------------------------------------//
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,7 +105,13 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
   },
   buttonStyle: {
-    backgroundColor: '#f00',
-    padding: 10,
+    backgroundColor: '#008c00',
+    padding: 10,  
+  },tinyLogo: {
+    alignItems: 'center',
+  },
+  logo: {
+    width: '100%',
+    height: 'auto',
   },
 });
