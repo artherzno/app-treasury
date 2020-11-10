@@ -1,11 +1,9 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, Dimensions, TouchableOpacity, Image, FlatList } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
-import logoLogin from './assets/tnl-login-logo3x.png'
 
 const Stack = createStackNavigator();
 
@@ -19,7 +17,9 @@ export default class App extends React.Component {
               name="LoginPage"
               component={LoginPage}
             />
+            <Stack.Screen name="ListPOI" component={ListPOI} />
             <Stack.Screen name="MapPage" component={MapPage} />
+            <Stack.Screen name="TestPage" component={TestPage} />
           </Stack.Navigator>
         </NavigationContainer>
     );
@@ -34,13 +34,14 @@ class LoginPage extends React.Component {
     return (
       <View style={styles.container}> 
          <Image
-          style={styles.tinyLogo}
-          source={logoLogin}
+          style={styles.logo}
+          // source={logoLogin}
+          source={require('./assets/tnl-login-logo3x.png')}
         />
         <TouchableOpacity 
           style={styles.buttonStyle}
           onPress={() =>
-            this.props.navigation.navigate('MapPage', { name: 'Jane' })
+            this.props.navigation.navigate('ListPOI', { name: 'Jane' })
           }
         >
           <Text>Go To Map</Text>
@@ -50,17 +51,77 @@ class LoginPage extends React.Component {
   }
 }
 
+// List Page ------------------------------------------------------//
+class ListPOI extends React.Component {
+  render() {
+    const DATA = [
+      {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        title: 'First Item',
+        image: './assets/tnl-maker3x.png',
+        position : {
+          coords: {
+            latitude: 13.736717,
+            longitude: 100.523186
+          }
+      }
+      },
+      {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        title: 'Second Item',
+        image: './assets/tnl-maker3x.png',
+        position : {
+          coords: {
+            latitude: 13.836717,
+            longitude: 100.423186
+          }
+      }
+      },
+      {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        title: 'Third Item',
+        image: './assets/tnl-maker3x.png',
+        position : {
+          coords: {
+            latitude: 13.936717,
+            longitude: 100.323186
+          }
+        }
+      },
+    ];
+
+    const renderItem = ({item}) => (
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('MapPage', { position: item.position })
+        }
+      >
+        <View style={styles.item} >
+          <Image style={styles.itemImage} source={require('./assets/tnl-marker3x.png')} />
+          <Text>{item.title}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+
+    return (
+      <SafeAreaView style={styles.containerList}>
+        {/* <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} /> */}
+        
+        <FlatList 
+          data={ DATA } 
+          renderItem={ renderItem }
+         />
+      </SafeAreaView>
+    );
+  }
+}
+
 // Map Page ------------------------------------------------------//
 class MapPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        position : {
-            coords: {
-              latitude: 13.736717,
-              longitude: 100.523186
-            }
-        }
+        position: this.props.route.params.position,
     }
   }
 
@@ -88,6 +149,23 @@ class MapPage extends React.Component {
   }
 }
 
+// Test Page ------------------------------------------------------//
+class TestPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      position: this.props.route.params.coords
+    }
+  }
+  
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>result: {JSON.stringify(this.state.position)}</Text>
+      </View>
+    );
+  }
+}
 
 // StyelSheet (CSS) ------------------------------------------------------//
 const styles = StyleSheet.create({
@@ -97,8 +175,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginStyle: {
-    backgroundColor: '#ddd',
+  containerList: {
+    flex: 1,
+    marginTop: 0,
+  },
+  item: {
+    backgroundColor: '#bbb',
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection: 'row',
+  },
+  itemImage: {
+    width: 20,
+    height: 20,
+  },
+  title: {
+    fontSize: 32,
   },
   mapStyle: {
     width: Dimensions.get('screen').width,
@@ -111,7 +204,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: '100%',
-    height: 'auto',
+    width: 240,
+    // height: '100%',
+    resizeMode: 'contain',
   },
 });
