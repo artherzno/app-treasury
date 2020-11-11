@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Polygon } from 'react-native-maps';
+import MapView, { Circle, Polygon } from 'react-native-maps';
 import { StyleSheet, Text, SafeAreaView, View, Dimensions, TouchableOpacity, Image, FlatList } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -146,6 +146,7 @@ class MapPage extends React.Component {
         strokeColor={'#f00'}
         fillColor={'rgba(255,0,0,0.5)'}
       />
+
       <MapView.Marker 
         coordinate= {{
           latitude: this.state.position.coords.latitude,
