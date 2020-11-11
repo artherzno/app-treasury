@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Polygon } from 'react-native-maps';
 import { StyleSheet, Text, SafeAreaView, View, Dimensions, TouchableOpacity, Image, FlatList } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -122,11 +122,17 @@ class MapPage extends React.Component {
     super(props);
     this.state = {
         position: this.props.route.params.position,
+        polygons: [
+          { name: '1', latitude: 13.736717, longitude: 100.523186 },
+          { name: '2', latitude: 13.636717, longitude: 100.423186 },
+          { name: '3', latitude: 13.536717, longitude: 100.623186 },
+          
+        ]
     }
   }
 
   render() {
-    return (
+    return ( 
       <MapView style={styles.mapStyle} 
       initialRegion={{
         latitude: this.state.position.coords.latitude,
@@ -135,6 +141,11 @@ class MapPage extends React.Component {
         longitudeDelta: 0.0421,
       }}
     >
+      <Polygon 
+        coordinates={this.state.polygons} 
+        strokeColor={'#f00'}
+        fillColor={'rgba(255,0,0,0.5)'}
+      />
       <MapView.Marker 
         coordinate= {{
           latitude: this.state.position.coords.latitude,
